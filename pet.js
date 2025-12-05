@@ -504,6 +504,12 @@ function teRain(active) {
 
 //Slots Game
 function openSlots() {
+  // Prevent duplicates
+  if (document.getElementById("slots") !== null) {
+    console.debug("Slots is already open");
+    return;
+  }
+
   petInteract.style.zIndex = '-1'; //Disable pet interaction
   overlay.style.backgroundImage = "url('" + image_db["slots"]["machine"] + "')";
   overlay.innerHTML = `
@@ -514,7 +520,7 @@ function openSlots() {
         <div class="slot" id="slot3"><img src="` + image_db["slots"]["c"] + `" /></div>
       </div>
       <input id="slot-button" type="button" value="` + printf(getString("slots_start_button"), activities.slots.cost) + `" onclick="runSlots();" />
-      <input type="button" value="` + getString("slots_exit_button") + `" onclick="closeSlots();" />
+      <input id="slot-button-exit" type="button" value="` + getString("slots_exit_button") + `" onclick="closeSlots();" />
       <p id="slot-text">` + getString("slots_welcome") + `</p>
     </div>`;
 }
@@ -530,12 +536,18 @@ var slotNumbers = [1, 1, 1];
 
 function runSlots() {
   var slotButton = document.getElementById('slot-button');
+  var slotButtonExit = document.getElementById('slot-button-exit');
   var slotText = document.getElementById('slot-text');
 
+  slotButton.disabled = true;
+  slotButtonExit.disabled = true;
   if (slotIntervals !== null) {
     if (slotLoopCounter < 15) {
       return;
     }
+
+    slotButton.disabled = false;
+    slotButtonExit.disabled = false;
     clearInterval(slotIntervals[0]);
     clearInterval(slotIntervals[1]);
     clearInterval(slotIntervals[2]);
@@ -581,6 +593,7 @@ function runSlots() {
     //Loop counter to allow stopping
     slotLoopCounter++;
     if (slotLoopCounter > 15) {
+      slotButton.disabled = false;
       slotButton.value = 'Stop!';
     }
 

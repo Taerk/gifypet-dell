@@ -141,7 +141,7 @@ var sound_db = {
     "/public/sounds/im-outta-here-sonic-cd.mp3"
   ],
   "slotsClick": [
-    "/public/sounds/SonicCD_FM66.oggs"
+    "/public/sounds/SonicCD_FM66.ogg"
   ],
   "slotsPull": [
     "/public/sounds/echl-sound-effect-slot-machine.mp3"

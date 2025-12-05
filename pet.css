@@ -92,6 +92,7 @@ td {
 .rainbow {
     animation: rainbow 3s infinite;
 }
+
 .party {
     animation: rainbow 3s infinite, jump 0.5s infinite;
 }
@@ -120,6 +121,10 @@ textarea#talk {
     background-color: white;
     opacity: 1;
     font-size: 12px;
+}
+
+.hide {
+    display: none
 }
 
 .uiicon {
@@ -159,7 +164,7 @@ textarea#talk {
 
 #slot-text {
     padding-top: 9px;
-    color: grey;
+    color: #fff;
     width: 150px;
     margin-left: auto;
     margin-right: auto;
@@ -196,6 +201,7 @@ textarea#talk {
 }
 
 @keyframes pett {
+
     from,
     11.1%,
     to {
@@ -243,6 +249,7 @@ textarea#talk {
 }
 
 @keyframes jump {
+
     from,
     20%,
     53%,
@@ -314,19 +321,22 @@ textarea#talk {
     animation: decay 8s 1;
     opacity: 0;
 }
+
 .decay-message.display {
     display: block;
 }
+
 .decay-arrow {
     width: 0px;
     height: 0px;
     border-left: 5px solid transparent;
     border-right: 5px solid transparent;
-    border-bottom: 10px solid rgba(0,0,0,0.8);
+    border-bottom: 10px solid rgba(0, 0, 0, 0.8);
     margin-left: 10px;
 }
+
 .decay-text {
-    background-color: rgba(0,0,0,0.8);
+    background-color: rgba(0, 0, 0, 0.8);
     border-radius: 3px;
     padding: 1px 3px;
 }
