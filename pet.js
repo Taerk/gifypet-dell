@@ -588,7 +588,7 @@ function runSlots() {
     slotLoopCounter = 0;
     slotButton.value = printf(getString("slots_start_button"), activities.slots.cost);
 
-    if (slotNumbers[0] == slotNumbers[1] == slotNumbers[2]) {
+    if (slotNumbers[0] == slotNumbers[1] && slotNumbers[1] == slotNumbers[2]) {
       slotSoundWin.play();
       slotText.innerHTML = printf(getString("slots_win"), activities.slots.win, activities.slots.cost);
       speak(petName, printf(getString("slots_win_pet_speak"), activities.slots.win, activities.slots.cost));
