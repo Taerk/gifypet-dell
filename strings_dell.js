@@ -117,7 +117,15 @@ string_db["dell"] = {
   "slots_poor": "<b>You need more coins for this.</b>", // {0} - Cost
   "slots_poor_pet_speak": "Awwww :(", // {0} - Cost
   "slots_running": "Spinning!",
-  "slots_running_spin": "<b>Good luck!</b>"
+  "slots_running_spin": "<b>Good luck!</b>",
+  "teufort_admin_name": "The Administrator",
+  "teufort_admin_enter": "Welcome to 2fort! Do your mission!",
+  "teufort_hungry_pet_speak": "I'm too hungry to go to war!",
+  "teufort_pet_speak_enter": "I'm going to make the big bucks!",
+  "teufort_admin_victory": "Victory!",
+  "teufort_admin_failure": "You've failed!",
+  "teufort_victory_pet_speak": "See! I knew we could win!",
+  "teufort_failure_pet_speak": "What happened?"
 };
 
 // Like the text, these will randomize if there are multiple entries
@@ -141,10 +149,11 @@ var sound_db = {
     "/public/sounds/im-outta-here-sonic-cd.mp3"
   ],
   "slotsClick": [
-    "/public/sounds/SonicCD_FM66.ogg"
+    "slots/click.mp3"
   ],
   "slotsPull": [
-    "/public/sounds/echl-sound-effect-slot-machine.mp3"
+    "/public/sounds/echl-sound-effect-slot-machine.mp3",
+    "/public/sounds/SonicCD_FM66.ogg"
   ],
   "slotsWin": [
     "/public/sounds/alright-sonic-cd.mp3"
@@ -152,6 +161,15 @@ var sound_db = {
   "slotsLose": [
     "/public/sounds/sonic-death-sound-effect.mp3"
   ],
+  "teufortCombat": [
+    "teufort/teufort_combat.ogg"
+  ],
+  "teufortWin": [
+    "teufort/victory.ogg"
+  ],
+  "teufortLose": [
+    "teufort/failure.ogg"
+  ]
 };
 
 // These aren't randomized, so don't change them into arrays
@@ -162,7 +180,7 @@ image_db = {
     "b": "https://heavymedic.gay/public/stamps/tumblr_cd33bb3402702af5985c5f0ed00f6324_8d0d4165_75.png"
   },
   "mood": "https://heavymedic.gay/public/stamps/tumblr_5de61d31e9b49c003ec36bcb4c4f64db_bf764497_75.webp",
-  "belly": "https://heavymedic.gay/public/stamps/tumblr_f51e029b90134540be7300474e3dc226_8544f262_75.webp",
+  "belly": "ui/food_dell.webp",
   "feed": "https://heavymedic.gay/public/stamps/dog_eat.gif",
   "slots": {
     "machine": "/public/sounds/slot.gif",
@@ -172,6 +190,8 @@ image_db = {
   },
   "rain": "overlays/rain.gif",
   "shower": "https://heavymedic.gay/public/stamps/tumblr_6251a0a6e4b29fe0291d2d759c312600_e8dff242_250.webp",
+  "shower_brush": "overlays/brushy.png",
+  "shower_water": "overlays/8bit-water-texture-sq.png",
   "heartrain": "https://heavymedic.gay/public/stamps/ezgif-5e88db4f218d8379.gif",
   "party": {
     "background": "https://heavymedic.gay/public/stamps/WXLS5PGDXKN4WFBUSSUSK45B7LVZWZVT.gif",
@@ -181,5 +201,9 @@ image_db = {
       "https://heavymedic.gay/public/stamps/IMG_6839.gif",
       "https://heavymedic.gay/public/stamps/IMG_6836.gif"
     ]
+  },
+  "teufort": {
+    "background": "teufort/2fort.png",
+    "weapon": "teufort/boomer-heavy-mg.gif"
   }
 };

@@ -89,6 +89,15 @@ td {
     transform: scaleX(-1);
 }
 
+#heavy-weapon {
+    width: 100%;
+    height: 100%;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center bottom;
+    transform: scaleX(-1);
+}
+
 .rainbow {
     animation: rainbow 3s infinite;
 }
@@ -143,9 +152,37 @@ textarea#talk {
     display: block;
 }
 
-.controls input {
+.controls input, .controls button {
     display: block;
     width: 82px;
+    font-family: serif;
+}
+
+#wash-display {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+#wash-display-brush {
+    height: 120px;
+    animation: scrub 0.1s infinite;
+}
+
+#wash-display-pet {
+    flex-grow: 1;
+    background-repeat: no-repeat;
+    background-size: fill;
+    background-position: center 50px;
+}
+
+#wash-display-water {
+    flex-grow: 0;
+    flex-shrink: 0;
+    height: 50px;
+    width: 100%;
+    animation: water-move-x 3s infinite, water-move-y 0.5s infinite;
 }
 
 .slot {
@@ -310,6 +347,51 @@ textarea#talk {
     100% {
         opacity: 0;
         top: 45px;
+    }
+}
+
+@keyframes water-move-x {
+    0% {
+        background-position-x: 0px;
+        animation-timing-function: ease-in-out;
+    }
+
+    50% {
+        background-position-x: 32px;
+    }
+
+    100% {
+        background-position-x: 0px;
+    }
+}
+
+@keyframes water-move-y {
+    0% {
+        background-position-y: 0px;
+        animation-timing-function: ease-in-out;
+    }
+
+    50% {
+        background-position-y: 5px;
+    }
+
+    100% {
+        background-position-y: 0px;
+    }
+}
+
+@keyframes scrub {
+    0% {
+        margin-left: 20px;
+        animation-timing-function: ease-in-out;
+    }
+
+    50% {
+        margin-left: 60px;
+    }
+
+    100% {
+        margin-left: 20px;
     }
 }
 

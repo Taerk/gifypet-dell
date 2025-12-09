@@ -143,7 +143,15 @@ string_db["en"] = {
   "slots_poor": "<b>YOU'RE POOR</b><br/>You need coins to play..", // {0} - Cost
   "slots_poor_pet_speak": "HOW AM I GONNA BUY FOOD NOW!", // {0} - Cost
   "slots_running": "Running!",
-  "slots_running_spin": "<b>THE SLOTS SPIN :O</b><br/>Good Luck!"
+  "slots_running_spin": "<b>THE SLOTS SPIN :O</b><br/>Good Luck!",
+  "teufort_admin_name": "The Administrator",
+  "teufort_admin_enter": "Welcome to 2fort! Do your mission!",
+  "teufort_hungry_pet_speak": "I'm too hungry to go to war!",
+  "teufort_pet_speak_enter": "I'm going to make the big bucks!",
+  "teufort_admin_victory": "Victory!",
+  "teufort_admin_failure": "You've failed!",
+  "teufort_victory_pet_speak": "See! I knew we could win!",
+  "teufort_failure_pet_speak": "What happened?"
 };
 
 // Like the text, these will randomize if there are multiple entries
@@ -178,6 +186,15 @@ sound_db = {
   "slotsLose": [
     "slots/loose.mp3"
   ],
+  "teufortCombat": [
+    "teufort/teufort_combat.ogg"
+  ],
+  "teufortWin": [
+    "teufort/victory.ogg"
+  ],
+  "teufortLose": [
+    "teufort/failure.ogg"
+  ]
 };
 
 // These aren't randomized, so don't change them into arrays
@@ -198,6 +215,8 @@ image_db = {
   },
   "rain": "overlays/rain.gif",
   "shower": "overlays/shower.gif",
+  "shower_brush": "overlays/brushy.png",
+  "shower_water": "overlays/8bit-water-texture-sq.png",
   "heartrain": "overlays/heartrain.gif",
   "party": {
     "background": "overlays/party.gif",
@@ -209,5 +228,9 @@ image_db = {
       "pets/frog.gif",
       "pets/cactus.gif",
     ]
+  },
+  "teufort": {
+    "background": "teufort/2fort.png",
+    "weapon": "teufort/boomer-heavy-mg.gif"
   }
 };

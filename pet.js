@@ -12,6 +12,7 @@ if (typeof activities == "undefined") {
   var activities = {};
 }
 if (typeof activities.feed == "undefined") {
+  console.info("Resetting feed activities to default");
   activities.feed = {
     "cost": 5,
     "mood": 10,
@@ -25,6 +26,7 @@ Array.from(document.getElementsByClassName("feed-cost-display")).forEach(functio
 });
 
 if (typeof activities.shower == "undefined") {
+  console.info("Resetting shower activities to default");
   activities.shower = {
     "cost": 1,
     "mood": 20,
@@ -36,6 +38,7 @@ Array.from(document.getElementsByClassName("wash-cost-display")).forEach(functio
 });
 
 if (typeof activities.party == "undefined") {
+  console.info("Resetting party activities to default");
   activities.party = {
     "cost": 20,
     "mood": 80,
@@ -47,6 +50,7 @@ Array.from(document.getElementsByClassName("party-cost-display")).forEach(functi
 });
 
 if (typeof activities.slots == "undefined") {
+  console.info("Resetting slots activities to default");
   activities.slots = {
     "cost": 5,
     "win_coins": 10,
@@ -56,10 +60,22 @@ if (typeof activities.slots == "undefined") {
   };
 }
 if (typeof activities.rain == "undefined") {
+  console.info("Resetting rain activities to default");
   activities.rain = {
     "rate": 2, // x/100 chance of rain starting to fall
     "mood": -20,
     "duration": 10
+  };
+}
+if (typeof activities.teufort == "undefined") {
+  console.info("Resetting teufort activities to default");
+  activities.teufort = {
+    "cost_belly": 20,
+    "duration": 10,
+    "win_coins": 20,
+    "win_mood": 20,
+    "lose_coins": 0,
+    "lose_mood": -20
   };
 }
 
@@ -81,7 +97,7 @@ if (!lastVisited) {
   localStorage.setItem("lastVisited", lastVisited);
 }
 var date = new Date(getParameterByName('dob') * 1000);
-var dob = date.getMonth() + 1 + '-' + date.getFullYear();
+var dob = `${date.getMonth() + 1}-${date.getDate()}-${date.getFullYear()}`;
 
 var playerName = getParameterByName('playerName');
 var petName = getParameterByName('name');
@@ -279,6 +295,11 @@ var lastPick = 0;
 var speakDelay = 0;
 
 function petTalk() {
+  // Prevent speaking timer from running while doing activities
+  if (teTimer > 0) {
+    return;
+  }
+
   //Speak Delay adds a minimum delay between messages
   speakDelay++;
   if (speakDelay < 12) {
@@ -364,7 +385,6 @@ function feedPet(foodType) {
 
 function teFeed(active) {
   if (active === true) {
-    console.log(image_db);
     overlay.style.backgroundImage = "url('" + image_db["feed"] + "')";
     eatSound.play();
   } else {
@@ -373,7 +393,7 @@ function teFeed(active) {
 }
 //Pet auto eats to maintain mood
 function autoEat() {
-  if (mood < 20 && belly < 20) {
+  if (mood < 20 && belly < 10) {
     speak(getString("feed_auto_name"), getString("feed_auto_speak"));
     speak(petName, foodTypeSayings[0][randomArray(foodTypeSayings[0])]);
     adjustBelly(20);
@@ -413,11 +433,18 @@ function tePett(active) {
 
 //Shower
 function showerPet() {
+  // Prevent shower if something is already happening
+  if (teTimer > 0) {
+    errorSound.play();
+    return;
+  }
+
   if (coins < activities.shower.cost) {
     speak(getString("shower_poor_name"), getString("shower_poor_speak"));
     errorSound.play();
     return;
   }
+  console.log(`Shower duration: ${activities.shower.duration}`);
   teStart(teShower, activities.shower.duration);
   speak(petName, getString("shower_pet_speak"));
   adjustMood(activities.shower.mood);
@@ -427,7 +454,8 @@ function showerPet() {
 function teShower(active) {
   if (active === true) {
     overlay.style.backgroundImage = `url('` + image_db["shower"] + `')`;
-    overlay.innerHTML = '<img style="padding-top: 50px; width: 60%;" src="' + petImage + '" />';
+    // overlay.innerHTML = '<img style="padding-top: 50px; width: 60%;" src="' + petImage + '" />';
+    overlay.innerHTML = `<div id="wash-display"><div id="wash-display-pet" style="background-image: url('${petImage}'"><img src="${image_db['shower_brush']}" id="wash-display-brush"></div><div id="wash-display-water" style="background-image: url('${image_db['shower_water']}'"></div></div>`;
     washSound.play();
   } else {
     overlay.style.backgroundImage = 'none';
@@ -437,6 +465,12 @@ function teShower(active) {
 
 //Party
 function petParty() {
+  // Prevent party if something is already happening
+  if (teTimer > 0) {
+    errorSound.play();
+    return;
+  }
+
   if (coins < activities.party.cost) {
     speak(getString("party_poor_name"), printf(getString("party_poor_speak"), activities.party.cost));
     errorSound.play();
@@ -515,9 +549,9 @@ function openSlots() {
   overlay.innerHTML = `
     <div id="slots">
       <div id="slot-counters">
-        <div class="slot" id="slot1"><img src="` + image_db["slots"]["a"] + `" /></div>
-        <div class="slot" id="slot2"><img src="` + image_db["slots"]["b"] + `" /></div>
-        <div class="slot" id="slot3"><img src="` + image_db["slots"]["c"] + `" /></div>
+        <div class="slot" id="slot0"><img src="` + image_db["slots"]["a"] + `" /></div>
+        <div class="slot" id="slot1"><img src="` + image_db["slots"]["b"] + `" /></div>
+        <div class="slot" id="slot2"><img src="` + image_db["slots"]["c"] + `" /></div>
       </div>
       <input id="slot-button" type="button" value="` + printf(getString("slots_start_button"), activities.slots.cost) + `" onclick="runSlots();" />
       <input id="slot-button-exit" type="button" value="` + getString("slots_exit_button") + `" onclick="closeSlots();" />
@@ -555,7 +589,7 @@ function runSlots() {
     slotLoopCounter = 0;
     slotButton.value = printf(getString("slots_start_button"), activities.slots.cost);
 
-    if (slotNumbers[0] == slotNumbers[1] && slotNumbers[1] == slotNumbers[2]) {
+    if (slotNumbers[0] == slotNumbers[1] == slotNumbers[2]) {
       slotSoundWin.play();
       slotText.innerHTML = printf(getString("slots_win"), activities.slots.win, activities.slots.cost);
       speak(petName, printf(getString("slots_win_pet_speak"), activities.slots.win, activities.slots.cost));
@@ -581,9 +615,16 @@ function runSlots() {
     adjustCoins(activities.slots.cost * -1);
   }
 
+  var slot0 = document.getElementById('slot0');
   var slot1 = document.getElementById('slot1');
   var slot2 = document.getElementById('slot2');
-  var slot3 = document.getElementById('slot3');
+
+  // Give the slots a random initial starting place.
+  // This makes it more difficult to get a 3 in a row the earlier you stop the slots
+  // It also prevents it from being influenced by the previous game of slots
+  slotNumbers[0] = Math.floor(Math.random() * 3);
+  slotNumbers[1] = Math.floor(Math.random() * 3);
+  slotNumbers[2] = Math.floor(Math.random() * 3);
 
   slotIntervals = [];
 
@@ -602,7 +643,7 @@ function runSlots() {
       slotNumbers[0] = 1;
     }
 
-    slot1.innerHTML = slotNumberToFruit(slotNumbers[0]);
+    slot0.innerHTML = slotNumberToFruit(slotNumbers[0]);
   }, Math.floor(Math.random() * 20 + 1) + 150);
 
   slotIntervals[1] = setInterval(function () {
@@ -611,7 +652,7 @@ function runSlots() {
       slotNumbers[1] = 1;
     }
 
-    slot2.innerHTML = slotNumberToFruit(slotNumbers[1]);
+    slot1.innerHTML = slotNumberToFruit(slotNumbers[1]);
   }, Math.floor(Math.random() * 20 + 1) + 150);
 
   slotIntervals[2] = setInterval(function () {
@@ -620,7 +661,7 @@ function runSlots() {
       slotNumbers[2] = 1;
     }
 
-    slot3.innerHTML = slotNumberToFruit(slotNumbers[2]);
+    slot2.innerHTML = slotNumberToFruit(slotNumbers[2]);
   }, Math.floor(Math.random() * 20 + 1) + 150);
 
   slotButton.value = getString("slots_running");
@@ -640,6 +681,64 @@ function slotNumberToFruit(number) {
   }
 }
 
+//Teufort
+var panic;
+function teufortPet() {
+  // Prevent 2fort if something is already happening
+  if (teTimer > 0) {
+    errorSound.play();
+    return;
+  }
+  
+  if (belly < activities.teufort.cost_belly) {
+    speak(petName, getString("teufort_hungry_pet_speak"));
+    return;
+  } else {
+    adjustBelly(activities.teufort.cost_belly * -1);
+  }
+  
+  teStart(teTeufort, activities.teufort.duration);
+  speak(getString("teufort_admin_name"), getString("teufort_admin_enter"));
+  speak(petName, getString("teufort_pet_speak_enter"));
+}
+
+function teTeufort(active) {
+  if (active === true) {
+    underlay.style.backgroundImage = `url("${image_db["teufort"]["background"]}")`;
+    underlay.style.backgroundSize = 'cover';
+    underlay.style.backgroundPosition = 'center bottom';
+    teufortCombat.play();
+    petdisplay.innerHTML = `<div id="heavy-weapon" style="background-image: url('${image_db["teufort"]["weapon"]}')"></div>`
+    
+    let teufort_win = Math.floor(Math.random() * 2);
+    teufortEnd.src = getSound(teufort_win ? "teufortWin" : "teufortLose");
+
+    setTimeout(function() {
+      teufortEnd.play();
+      if (teufort_win) {
+        speak(getString("teufort_admin_name"), getString("teufort_admin_victory"));
+        speak(petName, getString("teufort_victory_pet_speak"));
+        adjustCoins(activities.teufort.win_coins);
+        adjustMood(activities.teufort.win_mood);
+        overlay.style.backgroundImage = `url("${image_db["party"]["background"]}")`;
+      } else {
+        speak(getString("teufort_admin_name"), getString("teufort_admin_failure"));
+        speak(petName, getString("teufort_failure_pet_speak"));
+        petdisplay.innerHTML = "";
+        adjustCoins(activities.teufort.lose_coins);
+        adjustMood(activities.teufort.lose_mood);
+        panic = setInterval(movePet, 100);
+      }
+    }, (activities.teufort.duration * 1000 < 8000 ? 8000 : activities.teufort.duration * 1000) - 8000);
+  } else {
+    underlay.style.backgroundImage = 'none';
+    underlay.style.backgroundSize = null;
+    underlay.style.backgroundPosition = null;
+    overlay.style.backgroundImage = "none";
+    petdisplay.innerHTML = "";
+    clearInterval(panic);
+  }
+}
 //+++ Helpers +++
 
 //Outputs text to the talk box.
@@ -813,12 +912,12 @@ function adjustBelly(adjustment, set = false) {
   } else {
     belly += adjustment;
   }
-  saveMood(belly);
+  saveBelly(belly);
 }
 
 function saveBelly(belly) {
   localStorage.setItem("belly", belly);
-  return coins;
+  return belly;
 }
 
 function loadBelly() {
@@ -955,6 +1054,8 @@ var slotSoundClick = new Audio(getSound("slotsClick"));
 var slotSoundPull = new Audio(getSound("slotsPull"));
 var slotSoundWin = new Audio(getSound("slotsWin"));
 var slotSoundLoose = new Audio(getSound("slotsLose"));
+var teufortCombat = new Audio(getSound("teufortCombat"));
+var teufortEnd = new Audio();
 
 function printf(format, ...args) {
   let return_text = format.replace(/{(\d+)}/g, (match, number) => {

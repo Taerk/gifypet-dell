@@ -12,7 +12,7 @@ var hunger_decay_afk = hunger_decay / 5;
 var params = {
   "playerName": "y/n",
   "name": "Boomer",
-  "dob": 1764555037,
+  "dob": -602449200,
   "gender": "m",
   "element": "Lightning",
   "pet": "https://i.postimg.cc/Wb0PnY7c/boomer2.gif",
@@ -50,5 +50,13 @@ var activities = {
     "rate": 0, // x/100 chance of rain starting to fall
     "mood": -20,
     "duration": 10
+  },
+  "teufort": {
+    "cost_belly": 20,
+    "duration": 10,
+    "win_coins": 20,
+    "win_mood": 20,
+    "lose_coins": 0,
+    "lose_mood": -20
   }
 };
