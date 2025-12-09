@@ -24,7 +24,7 @@ var params = {
 
 var activities = {
   "feed": {
-    "cost": 5,
+    "cost": 1,
     "mood": 10,
     "belly": 20,
     "duration": 2
