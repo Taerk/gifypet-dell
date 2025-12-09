@@ -444,7 +444,6 @@ function showerPet() {
     errorSound.play();
     return;
   }
-  console.log(`Shower duration: ${activities.shower.duration}`);
   teStart(teShower, activities.shower.duration);
   speak(petName, getString("shower_pet_speak"));
   adjustMood(activities.shower.mood);
